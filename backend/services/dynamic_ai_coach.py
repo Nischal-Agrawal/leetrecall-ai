@@ -1,41 +1,54 @@
-from ml.recommendation.db_recommendations import (
-    generate_recommendations
-)
+from sqlalchemy.orm import Session
 
-from backend.services.openai_coach import (
-    generate_ai_advice
-)
+from backend.database.connection import SessionLocal
+
+from backend.models.recommendation import Recommendation
+from backend.models.question import Question
+
+from backend.services.openai_coach import generate_ai_advice
 
 
 def get_dynamic_advice():
 
-    recommendations = (
-        generate_recommendations()
-    )
+    db: Session = SessionLocal()
 
-    results = []
+    try:
 
-    top_questions = recommendations[:5]
-
-    for question in top_questions:
-
-        advice = generate_ai_advice(
-            question=question["title"],
-            forget_probability=
-            question["forget_probability"]
+        rows = (
+            db.query(
+                Recommendation.forget_probability,
+                Question.title,
+            )
+            .join(
+                Question,
+                Recommendation.question_id == Question.id,
+            )
+            .order_by(
+                Recommendation.forget_probability.desc()
+            )
+            .limit(5)
+            .all()
         )
 
-        results.append(
-            {
-                "question":
-                question["title"],
+        results = []
 
-                "forget_probability":
-                question["forget_probability"],
+        for row in rows:
 
-                "advice":
-                advice
-            }
-        )
+            advice = generate_ai_advice(
+                question=row.title,
+                forget_probability=row.forget_probability,
+            )
 
-    return results
+            results.append(
+                {
+                    "question": row.title,
+                    "forget_probability": row.forget_probability,
+                    "advice": advice,
+                }
+            )
+
+        return results
+
+    finally:
+
+        db.close()
