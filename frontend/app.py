@@ -30,6 +30,23 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+            
+
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+[data-testid="stIconMaterial"] {
+    font-family: "Material Symbols Rounded", "Material Symbols Outlined" !important;
+    font-size: 24px !important;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+            
+
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     html,
@@ -37,13 +54,29 @@ st.markdown("""
     [data-testid="stAppViewContainer"] * {
         font-family: 'Inter', sans-serif;
     }
-    #MainMenu { 
-        visibility: hidden !important;
-        width: 0px !important;
-        height: 0px !important;
-        overflow: hidden !important;
-        position: absolute !important;
-    }           
+/* Hides the old Streamlit menu */
+#MainMenu { display: none !important; }
+/* Hides the new updated Streamlit menu container */
+[data-testid="stTopBar"] button[kind="header"] {
+    display: none !important;
+}
+/* Extra measure: hide the whole top bar left section if the button is inside it */
+[data-testid="stTopBarLeft"] {
+    display: none !important;
+}
+
+
+
+/* Completely remove the new Streamlit top chat input bar */
+div[data-testid="stChatInput"] {
+    display: none !important;
+}
+button[aria-label="Chat input"] {
+    display: none !important;
+}
+section[data-testid="stChatInputContainer"] {
+    display: none !important;
+}                    
     footer { visibility: hidden; }
     header[data-testid="stHeader"] {
         background: rgba(15, 23, 42, 0.85) !important;
@@ -191,30 +224,21 @@ st.markdown("""
     }
     
     /* Create a new styled toggle button */
-    [data-testid="stSidebar"]::before {
-        content: '☰';
-        position: fixed;
-        top: 70px;
-        left: 10px;
-        z-index: 999999;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        color: white;
-        width: 42px;
-        height: 42px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        transition: all 0.2s ease;
-    }
+  
     
     [data-testid="stSidebar"]::before:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
     }
+            
+
+/* Targets the exact container holding the sidebar toggle text */
+button[data-testid="stSidebarToggle"] span {
+    display: none !important;
+}
+
+/* Replaces the hidden text with a clean icon */
+
 
 </style>
 """, unsafe_allow_html=True)
