@@ -37,8 +37,13 @@ st.markdown("""
     [data-testid="stAppViewContainer"] * {
         font-family: 'Inter', sans-serif;
     }
-            
-    #MainMenu { visibility: hidden; }
+    #MainMenu { 
+        visibility: hidden !important;
+        width: 0px !important;
+        height: 0px !important;
+        overflow: hidden !important;
+        position: absolute !important;
+    }           
     footer { visibility: hidden; }
     header[data-testid="stHeader"] {
         background: rgba(15, 23, 42, 0.85) !important;
