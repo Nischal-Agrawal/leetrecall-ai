@@ -178,6 +178,39 @@ st.markdown("""
     [data-testid="stSidebar"] .stRadio label:hover {
         background: rgba(99, 102, 241, 0.08) !important;
     }
+            
+        /* --- FIX: Replace raw text sidebar toggle with a styled icon button --- */
+    [data-testid="stSidebarCollapsedControl"] {
+        /* Hide the default ugly text button */
+        display: none !important;
+    }
+    
+    /* Create a new styled toggle button */
+    [data-testid="stSidebar"]::before {
+        content: '☰';
+        position: fixed;
+        top: 70px;
+        left: 10px;
+        z-index: 999999;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        transition: all 0.2s ease;
+    }
+    
+    [data-testid="stSidebar"]::before:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
