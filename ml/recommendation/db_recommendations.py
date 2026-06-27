@@ -1,6 +1,8 @@
 import pandas as pd
 import joblib
 
+from sqlalchemy import func
+
 from backend.database.connection import SessionLocal
 
 from backend.models.question import Question
@@ -24,95 +26,123 @@ def generate_recommendations():
 
     db = SessionLocal()
 
-    recommendations = []
+    try:
 
-    solves = db.query(Solve).all()
+        recommendations = []
 
-    for solve in solves:
+        # -----------------------------
+        # Load all required data ONCE
+        # -----------------------------
 
-        question = (
-            db.query(Question)
-            .filter(
-                Question.id == solve.question_id
+        questions = db.query(Question).all()
+
+        question_map = {
+            q.id: q
+            for q in questions
+        }
+
+        revision_counts = dict(
+
+            db.query(
+                Revision.question_id,
+                func.count(Revision.id)
             )
-            .first()
-        )
-
-        revision_count = (
-            db.query(Revision)
-            .filter(
+            .group_by(
                 Revision.question_id
-                == solve.question_id
             )
-            .count()
+            .all()
+
         )
 
-        features = pd.DataFrame(
-            [
+        solves = db.query(Solve).all()
+
+        # -----------------------------
+        # Generate predictions
+        # -----------------------------
+
+        for solve in solves:
+
+            question = question_map.get(
+                solve.question_id
+            )
+
+            if question is None:
+                continue
+
+            revision_count = revision_counts.get(
+                solve.question_id,
+                0
+            )
+
+            features = pd.DataFrame([
                 {
                     "days_since_solved": 30,
+
                     "difficulty":
                     difficulty_mapping[
                         question.difficulty
                     ],
+
                     "wrong_attempts":
                     solve.wrong_attempts,
+
                     "hints_used":
                     solve.hints_used,
+
                     "confidence_score":
                     solve.confidence_score,
+
                     "revision_count":
                     revision_count
                 }
-            ]
+            ])
+
+            remember_probability = (
+                model.predict_proba(
+                    features
+                )[0][1]
+            )
+
+            forget_probability = (
+                1 - remember_probability
+            )
+
+            recommendations.append(
+                {
+                    "question_id":
+                    question.id,
+
+                    "title":
+                    question.title,
+
+                    "forget_probability":
+                    round(
+                        float(
+                            forget_probability
+                        ),
+                        4
+                    )
+                }
+            )
+
+        recommendations.sort(
+            key=lambda x:
+            x["forget_probability"],
+            reverse=True
         )
 
-        remember_probability = (
-            model.predict_proba(
-                features
-            )[0][1]
-        )
+        return recommendations
 
-        forget_probability = (
-            1 - remember_probability
-        )
+    finally:
 
-        recommendations.append(
-            {
-                "question_id":
-                question.id,
-
-                "title":
-                question.title,
-
-                "forget_probability":
-                round(
-                    float(
-                        forget_probability
-                    ),
-                    4
-                )
-            }
-        )
-
-    db.close()
-
-    recommendations.sort(
-        key=lambda x:
-        x["forget_probability"],
-        reverse=True
-    )
-
-    return recommendations
+        db.close()
 
 
 if __name__ == "__main__":
 
     results = generate_recommendations()
 
-    print(
-        "\nDATABASE RECOMMENDATIONS\n"
-    )
+    print("\nDATABASE RECOMMENDATIONS\n")
 
     for r in results:
 
