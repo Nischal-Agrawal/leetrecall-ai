@@ -214,7 +214,7 @@ st.markdown("""
 
 def safe_api_call(endpoint: str, params: dict = None) -> dict | list:
     try:
-        response = requests.get(f"{API_BASE}{endpoint}", params=params, timeout=10)
+        response = requests.get(f"{API_BASE}{endpoint}", params=params, timeout=60)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.ConnectionError:
