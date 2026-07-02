@@ -19,55 +19,55 @@ API_BASE = os.getenv(
 )
 
 
-def wait_for_backend():
-    """
-    Wait until the backend wakes up.
-    Only executed once when the app starts.
-    """
+# def wait_for_backend():
+#     """
+#     Wait until the backend wakes up.
+#     Only executed once when the app starts.
+#     """
 
-    placeholder = st.empty()
+#     placeholder = st.empty()
 
-    MAX_RETRIES = 12        # 12 × 5 = 60 sec
-    RETRY_DELAY = 5
+#     MAX_RETRIES = 12        # 12 × 5 = 60 sec
+#     RETRY_DELAY = 5
 
-    for attempt in range(MAX_RETRIES):
+#     for attempt in range(MAX_RETRIES):
 
-        try:
-            response = requests.get(
-                f"{API_BASE}/",
-                timeout=10
-            )
+#         try:
+#             response = requests.get(
+#                 f"{API_BASE}/",
+#                 timeout=10
+#             )
 
-            if response.status_code == 200:
-                placeholder.empty()
-                return True
+#             if response.status_code == 200:
+#                 placeholder.empty()
+#                 return True
 
-        except:
-            pass
+#         except:
+#             pass
 
-        placeholder.info(
-            f"""
-🚀 **Starting Backend...**
+#         placeholder.info(
+#             f"""
+# 🚀 **Starting Backend...**
 
-Render Free Tier puts the backend to sleep.
+# Render Free Tier puts the backend to sleep.
 
-Please wait...
+# Please wait...
 
-Attempt **{attempt+1}/{MAX_RETRIES}**
-"""
-        )
+# Attempt **{attempt+1}/{MAX_RETRIES}**
+# """
+#         )
 
-        time.sleep(RETRY_DELAY)
+#         time.sleep(RETRY_DELAY)
 
-    placeholder.error(
-        """
-❌ Backend could not be started.
+#     placeholder.error(
+#         """
+# ❌ Backend could not be started.
 
-Please refresh the page.
-"""
-    )
+# Please refresh the page.
+# """
+#     )
 
-    return False
+#     return False
 
 st.set_page_config(
     page_title="LeetRecall AI",
@@ -76,10 +76,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-if "backend_ready" not in st.session_state:
-    st.session_state.backend_ready = wait_for_backend()
+# if "backend_ready" not in st.session_state:
+#     st.session_state.backend_ready = wait_for_backend()
 
-backend_ready = st.session_state.backend_ready
+# backend_ready = st.session_state.backend_ready
 
 # ============================================================
 # CUSTOM CSS
@@ -333,27 +333,86 @@ st.markdown("""
 # HELPER FUNCTIONS (unchanged)
 # ============================================================
 
-def safe_api_call(endpoint: str, params: dict = None) -> dict | list:
+# def safe_api_call(endpoint: str, params: dict = None) -> dict | list:
 
-    if not backend_ready:
-        return []
-    try:
-        response = requests.get(f"{API_BASE}{endpoint}", params=params, timeout=60)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.ConnectionError:
-        st.error("⚠️ Backend server is not running. Please start the FastAPI server first.")
-        return []
-    except requests.exceptions.Timeout:
-        st.error("⚠️ Request timed out. Server may be overloaded.")
-        return []
-    except requests.exceptions.HTTPError as e:
-        st.error(f"⚠️ Server error: {e.response.status_code}")
-        return []
-    except Exception:
-        st.error("⚠️ An unexpected error occurred while fetching data.")
-        return []
+#     # if not backend_ready:
+#     #     return []
+#     try:
+#         response = requests.get(f"{API_BASE}{endpoint}", params=params, timeout=60)
+#         response.raise_for_status()
+#         return response.json()
+#     except requests.exceptions.ConnectionError:
+#         st.error("⚠️ Backend server is not running. Please start the FastAPI server first.")
+#         return []
+#     except requests.exceptions.Timeout:
+#         st.error("⚠️ Request timed out. Server may be overloaded.")
+#         return []
+#     except requests.exceptions.HTTPError as e:
+#         st.error(f"⚠️ Server error: {e.response.status_code}")
+#         return []
+#     except Exception:
+#         st.error("⚠️ An unexpected error occurred while fetching data.")
+#         return []
 
+
+def safe_api_call(endpoint: str, params: dict = None):
+    """
+    Automatically retries while the Render backend wakes up.
+    """
+
+    MAX_WAIT = 90          # seconds
+    RETRY_DELAY = 5        # seconds
+
+    placeholder = st.empty()
+
+    elapsed = 0
+
+    while elapsed < MAX_WAIT:
+
+        try:
+            response = requests.get(
+                f"{API_BASE}{endpoint}",
+                params=params,
+                timeout=20
+            )
+
+            response.raise_for_status()
+
+            placeholder.empty()
+
+            return response.json()
+
+        except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout,
+            requests.exceptions.HTTPError,
+        ):
+
+            placeholder.info(
+                f"""
+🚀 **Starting Backend...**
+
+Render Free Tier puts the backend to sleep.
+
+Please wait...
+
+**{elapsed}/{MAX_WAIT} seconds**
+"""
+            )
+
+            time.sleep(RETRY_DELAY)
+
+            elapsed += RETRY_DELAY
+
+    placeholder.error(
+        """
+❌ Backend is taking longer than expected.
+
+Please refresh after a minute.
+"""
+    )
+
+    return []
 
 def render_metric_card(column, label: str, value, icon: str, color: str = "#6366f1"):
     if isinstance(value, (int, float)):
