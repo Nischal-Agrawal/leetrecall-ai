@@ -6,6 +6,9 @@ import os
 import time
 from datetime import datetime
 
+from login import show_login
+from signup import show_signup
+
 # ============================================================
 # CONFIGURATION
 # ============================================================
@@ -76,6 +79,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ============================================================
+# AUTHENTICATION SESSION
+# ============================================================
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if "show_signup" not in st.session_state:
+    st.session_state.show_signup = False
+
  
 
 if "backend_ready" not in st.session_state:
@@ -109,6 +122,34 @@ Please follow these steps:
         
     st.stop()
 
+
+# ============================================================
+# LOGIN / SIGNUP SCREEN
+# ============================================================
+
+if not st.session_state.logged_in:
+
+    if st.session_state.show_signup:
+
+        show_signup()
+
+        st.write("")
+
+        if st.button("⬅ Back to Login", use_container_width=True):
+            st.session_state.show_signup = False
+            st.rerun()
+
+    else:
+
+        show_login()
+
+        st.write("")
+
+        if st.button("Create New Account", use_container_width=True):
+            st.session_state.show_signup = True
+            st.rerun()
+
+    st.stop()
 # ============================================================
 # CUSTOM CSS
 # ============================================================
@@ -507,10 +548,11 @@ def section_divider():
 
 
 # ============================================================
-# SIDEBAR  —  ONLY CHANGE: replaced HTML divs with st.radio
+# SIDEBAR
 # ============================================================
 
 with st.sidebar:
+
     st.markdown("""
     <div style="text-align: center; padding: 20px 0 10px 0;">
         <div style="font-size: 2.5rem; margin-bottom: 4px;">🧠</div>
@@ -521,8 +563,18 @@ with st.sidebar:
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.02em;
-        ">LeetRecall AI</div>
-        <div style="font-size: 0.72rem; color: #475569; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; margin-top: 4px;">
+        ">
+            LeetRecall AI
+        </div>
+
+        <div style="
+            font-size:0.72rem;
+            color:#475569;
+            font-weight:500;
+            text-transform:uppercase;
+            letter-spacing:0.12em;
+            margin-top:4px;
+        ">
             DSA Revision System
         </div>
     </div>
@@ -530,15 +582,44 @@ with st.sidebar:
 
     st.markdown("---")
 
+    # ============================================================
+    # USER PROFILE
+    # ============================================================
+
+    st.markdown("### 👤 Logged In")
+
+    st.success(f"Welcome, **{st.session_state.username}**")
+
+    st.caption(st.session_state.email)
+
+    if st.button(
+        "🚪 Logout",
+        use_container_width=True
+    ):
+        st.session_state.logged_in = False
+        st.session_state.show_signup = False
+
+        st.session_state.pop("token", None)
+        st.session_state.pop("username", None)
+        st.session_state.pop("email", None)
+
+        st.rerun()
+
     st.markdown("""
-    <div style="padding: 0 4px;">
-        <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #475569; margin-bottom: 10px;">
+    <div style="padding:0 4px;">
+        <div style="
+            font-size:0.7rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            color:#475569;
+            margin-bottom:10px;
+        ">
             Navigation
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ✅ THIS IS THE FIX — st.radio instead of static HTML divs
     nav_options = [
         "📋  View All",
         "📊  Dashboard",
@@ -566,31 +647,64 @@ with st.sidebar:
 
     st.markdown("""
     <div style="
-        background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
-        border: 1px solid rgba(99,102,241,0.15);
-        border-radius: 12px;
-        padding: 16px;
-        text-align: center;
+        background: linear-gradient(
+            135deg,
+            rgba(99,102,241,0.1),
+            rgba(139,92,246,0.1)
+        );
+        border:1px solid rgba(99,102,241,0.15);
+        border-radius:12px;
+        padding:16px;
+        text-align:center;
     ">
-        <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #818cf8; margin-bottom: 6px;">
+        <div style="
+            font-size:0.7rem;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            color:#818cf8;
+            margin-bottom:6px;
+        ">
             System Status
         </div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5);"></div>
-            <span style="color: #86efac; font-size: 0.82rem; font-weight: 500;">Online</span>
+
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:6px;
+        ">
+            <div style="
+                width:8px;
+                height:8px;
+                border-radius:50%;
+                background:#22c55e;
+                box-shadow:0 0 8px rgba(34,197,94,0.5);
+            "></div>
+
+            <span style="
+                color:#86efac;
+                font-size:0.82rem;
+                font-weight:500;
+            ">
+                Online
+            </span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div style="padding: 20px 0 10px 0; text-align: center;">
-        <div style="font-size: 0.7rem; color: #334155; font-weight: 400;">
-            Built with Spaced Repetition<br>& AI-Powered Insights
+    <div style="padding:20px 0 10px 0;text-align:center;">
+        <div style="
+            font-size:0.7rem;
+            color:#334155;
+            font-weight:400;
+        ">
+            Built with Spaced Repetition<br>
+            & AI-Powered Insights
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-
 # ============================================================
 # MAIN CONTENT  —  wrapped in if/elif, same rendering code
 # ============================================================
