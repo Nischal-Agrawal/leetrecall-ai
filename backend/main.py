@@ -5,6 +5,7 @@ from backend.database.base import Base
 
 import backend.models
 
+
 from backend.api.recommendation_api import (
     router as recommendation_router
 )
@@ -24,6 +25,8 @@ from backend.api.weak_topic_api import (
 from backend.api.pattern_coverage_api import (
     router as pattern_router
 )
+
+from backend.api.auth_api import router as auth_router
 
 from backend.api.topic_mastery_api import (
     router as topic_mastery_router
@@ -105,6 +108,7 @@ app.include_router(
 app.include_router(
     interview_ai_router
 )
+app.include_router(auth_router)
 
 @app.get("/")
 def home():
