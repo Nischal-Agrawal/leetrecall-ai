@@ -76,10 +76,38 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# if "backend_ready" not in st.session_state:
-#     st.session_state.backend_ready = wait_for_backend()
+ 
 
-# backend_ready = st.session_state.backend_ready
+if "backend_ready" not in st.session_state:
+    st.session_state.backend_ready = False
+
+if not st.session_state.backend_ready:
+    st.title("🧠 LeetRecall AI")
+    
+    st.warning("""
+🚀 Backend Wake-Up Required
+
+This project is hosted on Render's Free Tier.
+The backend automatically goes to sleep after a period of inactivity.
+
+Please follow these steps:
+1. Click 🚀 Open Backend
+2. Wait about 40–60 seconds
+3. When the backend page shows:
+   {"message":"LeetRecall AI Backend Running"}
+4. Return to this page.
+5. Click ✅ Continue to Dashboard.
+""")
+
+    st.link_button("🚀 Open Backend", API_BASE, use_container_width=True)
+    
+    st.write("")
+    
+    if st.button("✅ Continue to Dashboard", use_container_width=True):
+        st.session_state.backend_ready = True
+        st.rerun()
+        
+    st.stop()
 
 # ============================================================
 # CUSTOM CSS
@@ -356,63 +384,17 @@ st.markdown("""
 
 
 def safe_api_call(endpoint: str, params: dict = None):
-    """
-    Automatically retries while the Render backend wakes up.
-    """
+    try:
+        response = requests.get(
+            f"{API_BASE}{endpoint}",
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        return response.json()
 
-    MAX_WAIT = 90          # seconds
-    RETRY_DELAY = 5        # seconds
-
-    placeholder = st.empty()
-
-    elapsed = 0
-
-    while elapsed < MAX_WAIT:
-
-        try:
-            response = requests.get(
-                f"{API_BASE}{endpoint}",
-                params=params,
-                timeout=20
-            )
-
-            response.raise_for_status()
-
-            placeholder.empty()
-
-            return response.json()
-
-        except (
-            requests.exceptions.ConnectionError,
-            requests.exceptions.Timeout,
-            requests.exceptions.HTTPError,
-        ):
-
-            placeholder.info(
-                f"""
-🚀 **Starting Backend...**
-
-Render Free Tier puts the backend to sleep.
-
-Please wait...
-
-**{elapsed}/{MAX_WAIT} seconds**
-"""
-            )
-
-            time.sleep(RETRY_DELAY)
-
-            elapsed += RETRY_DELAY
-
-    placeholder.error(
-        """
-❌ Backend is taking longer than expected.
-
-Please refresh after a minute.
-"""
-    )
-
-    return []
+    except Exception:
+        return []
 
 def render_metric_card(column, label: str, value, icon: str, color: str = "#6366f1"):
     if isinstance(value, (int, float)):
