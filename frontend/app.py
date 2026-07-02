@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import plotly.express as px
 import os
+import time
 from datetime import datetime
 
 # ============================================================
@@ -17,12 +18,68 @@ API_BASE = os.getenv(
     "http://127.0.0.1:8000"
 )
 
+
+def wait_for_backend():
+    """
+    Wait until the backend wakes up.
+    Only executed once when the app starts.
+    """
+
+    placeholder = st.empty()
+
+    MAX_RETRIES = 12        # 12 × 5 = 60 sec
+    RETRY_DELAY = 5
+
+    for attempt in range(MAX_RETRIES):
+
+        try:
+            response = requests.get(
+                f"{API_BASE}/",
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                placeholder.empty()
+                return True
+
+        except:
+            pass
+
+        placeholder.info(
+            f"""
+🚀 **Starting Backend...**
+
+Render Free Tier puts the backend to sleep.
+
+Please wait...
+
+Attempt **{attempt+1}/{MAX_RETRIES}**
+"""
+        )
+
+        time.sleep(RETRY_DELAY)
+
+    placeholder.error(
+        """
+❌ Backend could not be started.
+
+Please refresh the page.
+"""
+    )
+
+    return False
+
 st.set_page_config(
     page_title="LeetRecall AI",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+if "backend_ready" not in st.session_state:
+    st.session_state.backend_ready = wait_for_backend()
+
+backend_ready = st.session_state.backend_ready
 
 # ============================================================
 # CUSTOM CSS
@@ -277,6 +334,9 @@ st.markdown("""
 # ============================================================
 
 def safe_api_call(endpoint: str, params: dict = None) -> dict | list:
+
+    if not backend_ready:
+        return []
     try:
         response = requests.get(f"{API_BASE}{endpoint}", params=params, timeout=60)
         response.raise_for_status()
