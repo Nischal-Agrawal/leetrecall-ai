@@ -855,14 +855,7 @@ Feel free to use, modify, and distribute it according to the license terms.
 
 Netaji Subhas University of Technology (NSUT)
 
----
 
-### Connect With Me
-
-- 💼 LinkedIn: *(Add your LinkedIn URL)*
-- 💻 GitHub: *(Add your GitHub URL)*
-- 🌐 Portfolio: *(Add your Portfolio URL)*
-- 📧 Email: *(Add your Email)*
 
 ---
 
