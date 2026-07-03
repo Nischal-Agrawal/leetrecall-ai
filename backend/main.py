@@ -5,7 +5,7 @@ from backend.database.base import Base
 
 import backend.models
 
-
+from fastapi.responses import HTMLResponse
 from backend.api.recommendation_api import (
     router as recommendation_router
 )
@@ -110,8 +110,89 @@ app.include_router(
 )
 app.include_router(auth_router)
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def home():
-    return {
-        "message": "LeetRecall AI Backend Running"
-    }
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>LeetRecall AI Backend</title>
+
+        <meta http-equiv="refresh"
+              content="5;url=https://YOUR_FRONTEND_URL.streamlit.app">
+
+        <style>
+            body{
+                margin:0;
+                font-family:Arial,Helvetica,sans-serif;
+                background:#0f172a;
+                color:white;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+            }
+
+            .card{
+                width:500px;
+                text-align:center;
+                background:#1e293b;
+                padding:40px;
+                border-radius:18px;
+                box-shadow:0 0 25px rgba(0,0,0,.35);
+            }
+
+            h1{
+                color:#60a5fa;
+                margin-bottom:10px;
+            }
+
+            p{
+                color:#cbd5e1;
+                line-height:1.6;
+            }
+
+            a{
+                display:inline-block;
+                margin-top:25px;
+                padding:14px 28px;
+                text-decoration:none;
+                background:#2563eb;
+                color:white;
+                border-radius:10px;
+                font-weight:bold;
+                transition:.3s;
+            }
+
+            a:hover{
+                background:#1d4ed8;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="card">
+
+            <h1>🧠 LeetRecall AI</h1>
+
+            <h2>✅ Backend is Running</h2>
+
+            <p>
+                Your backend has successfully started.
+                <br><br>
+                You will automatically be redirected
+                to the frontend in <b>5 seconds</b>.
+            </p>
+
+            <a href="https://leetrecall-frontend.onrender.com">
+                🚀 Open LeetRecall AI
+            </a>
+
+        </div>
+
+    </body>
+
+    </html>
+    """
