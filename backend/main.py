@@ -119,7 +119,7 @@ def home():
         <title>LeetRecall AI Backend</title>
 
         <meta http-equiv="refresh"
-              content="5;url=https://YOUR_FRONTEND_URL.streamlit.app">
+              content="5;url=https://leetrecall-frontend.onrender.com">
 
         <style>
             body{
