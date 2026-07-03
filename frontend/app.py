@@ -566,7 +566,6 @@ with st.sidebar:
         ">
             LeetRecall AI
         </div>
-
         <div style="
             font-size:0.72rem;
             color:#475569;
@@ -587,23 +586,22 @@ with st.sidebar:
     # ============================================================
 
     st.markdown("### 👤 Logged In")
-
     st.success(f"Welcome, **{st.session_state.username}**")
-
     st.caption(st.session_state.email)
 
-    if st.button(
-        "🚪 Logout",
-        use_container_width=True
-    ):
+    if st.button("🚪 Logout", use_container_width=True):
         st.session_state.logged_in = False
         st.session_state.show_signup = False
-
         st.session_state.pop("token", None)
         st.session_state.pop("username", None)
         st.session_state.pop("email", None)
-
         st.rerun()
+
+    st.markdown("---")
+
+    # ============================================================
+    # NAVIGATION (Fixed - no duplicate text)
+    # ============================================================
 
     st.markdown("""
     <div style="padding:0 4px;">
@@ -633,8 +631,9 @@ with st.sidebar:
         "📅  Interview Planner",
     ]
 
+    # FIX: Use empty string as label to avoid duplicate text
     selected = st.radio(
-        "nav",
+        label="",                          # Empty label instead of "nav"
         options=nav_options,
         label_visibility="collapsed",
         index=0,
@@ -644,6 +643,10 @@ with st.sidebar:
     show_all = (page == "View All")
 
     st.markdown("---")
+
+    # ============================================================
+    # SYSTEM STATUS
+    # ============================================================
 
     st.markdown("""
     <div style="
@@ -667,7 +670,6 @@ with st.sidebar:
         ">
             System Status
         </div>
-
         <div style="
             display:flex;
             align-items:center;
@@ -681,7 +683,6 @@ with st.sidebar:
                 background:#22c55e;
                 box-shadow:0 0 8px rgba(34,197,94,0.5);
             "></div>
-
             <span style="
                 color:#86efac;
                 font-size:0.82rem;
