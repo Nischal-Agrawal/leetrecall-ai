@@ -1,5 +1,3 @@
-<div align="center">
-
 # 🧠 LeetRecall AI
 
 ### Intelligent DSA Revision & Knowledge Retention Platform powered by Machine Learning
@@ -42,6 +40,9 @@
 
 # 📖 Overview
 
+<details>
+<summary><strong>Click to expand this section</strong></summary>
+
 LeetRecall AI is an end-to-end AI-powered learning platform designed to help competitive programmers and interview candidates retain Data Structures & Algorithms knowledge more effectively.
 
 Instead of only recording solved problems, the platform predicts which questions are likely to be forgotten, recommends intelligent revision schedules, analyzes learning progress, and provides AI-powered study insights.
@@ -50,7 +51,12 @@ The project combines modern full-stack development with Machine Learning to crea
 
 ---
 
+</details>
+
 # ❓ Problem Statement
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Most programmers solve hundreds of DSA problems during interview preparation.
 
@@ -70,7 +76,12 @@ LeetRecall AI answers:
 
 ---
 
+</details>
+
 # 💡 Solution
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 LeetRecall AI uses Machine Learning models to estimate knowledge retention.
 
@@ -88,7 +99,12 @@ The platform also provides rich dashboards for:
 
 ---
 
+</details>
+
 # 🚀 Key Features
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 | Feature | Description |
 |----------|-------------|
@@ -105,7 +121,12 @@ The platform also provides rich dashboards for:
 
 ---
 
+</details>
+
 # 🏗️ System Architecture
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -146,7 +167,12 @@ This architecture ensures:
 
 ---
 
+</details>
+
 # 🎯 Why This Project?
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 LeetRecall AI demonstrates practical integration of
 
@@ -165,7 +191,12 @@ Unlike many ML projects that stop after model training, this project deploys the
 
 ---
 
+</details>
+
 # ⚡ Tech Highlights
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 - End-to-End Machine Learning Application
 - Production-style FastAPI Backend
@@ -180,7 +211,12 @@ Unlike many ML projects that stop after model training, this project deploys the
 
 ---
 
+</details>
+
 # 🤖 Machine Learning Pipeline
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -304,7 +340,12 @@ This predictive approach makes revision more efficient and data-driven.
 
 ---
 
+</details>
+
 # 📊 Interactive Dashboard
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -327,7 +368,12 @@ It aggregates insights from the recommendation engine, analytics services, and m
 
 ---
 
+</details>
+
 # 📉 Knowledge Decay Analysis
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -350,7 +396,12 @@ Instead of encouraging random practice, users receive revision suggestions based
 
 ---
 
+</details>
+
 # 📚 Topic Mastery
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -375,7 +426,12 @@ This allows learners to focus on topics that require additional practice.
 
 ---
 
+</details>
+
 # 🎯 Pattern Coverage
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Pattern Coverage measures exposure to common algorithmic techniques.
 
@@ -395,7 +451,12 @@ Instead of focusing only on problem count, the platform emphasizes conceptual co
 
 ---
 
+</details>
+
 # ⚠️ Weak Area Detection
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Weak Area Detection automatically identifies topics and patterns that require immediate attention.
 
@@ -410,7 +471,12 @@ These insights help users prioritize their preparation effectively.
 
 ---
 
+</details>
+
 # 🏆 Contest Analyzer
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 The Contest Analyzer provides post-contest performance insights.
 
@@ -426,7 +492,12 @@ The goal is to convert contest performance into actionable learning insights.
 
 ---
 
+</details>
+
 # 🧠 AI Coach
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -448,7 +519,12 @@ This transforms static analytics into meaningful, actionable advice.
 
 ---
 
+</details>
+
 # 🔌 REST API
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -475,7 +551,12 @@ The REST architecture keeps the frontend and backend fully decoupled, making the
 
 ---
 
+</details>
+
 # 🗄️ Database Design
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -503,7 +584,12 @@ The schema is normalized and designed to support future user-specific analytics 
 
 ---
 
+</details>
+
 # ☁️ Cloud Deployment
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 <p align="center">
 
@@ -522,7 +608,13 @@ LeetRecall AI is deployed using a modern cloud architecture.
 This separation allows each component to scale independently while maintaining a clean production-style architecture.
 
 ---
+
+</details>
+
 # ⚙️ Technology Stack
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 LeetRecall AI integrates multiple technologies across frontend, backend, database, authentication, machine learning, and deployment.
 
@@ -545,7 +637,12 @@ LeetRecall AI integrates multiple technologies across frontend, backend, databas
 
 ---
 
+</details>
+
 # 📂 Project Structure
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 The project follows a modular architecture for better scalability and maintainability.
 
@@ -582,7 +679,12 @@ LeetRecall-AI
 
 ---
 
+</details>
+
 # 🚀 Installation
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 ## Clone Repository
 
@@ -664,7 +766,12 @@ streamlit run frontend/app.py
 
 ---
 
+</details>
+
 # 🔄 End-to-End Workflow
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 ```text
                    User
@@ -693,7 +800,12 @@ streamlit run frontend/app.py
 
 ---
 
+</details>
+
 # 🔐 Authentication
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Authentication is implemented using JWT (JSON Web Tokens).
 
@@ -711,7 +823,12 @@ The authentication system is designed so that future versions can provide fully 
 
 ---
 
+</details>
+
 # 💡 Engineering Decisions
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Several design decisions were made to keep the project modular, scalable, and production-oriented.
 
@@ -755,7 +872,12 @@ This reduces API latency and keeps the backend lightweight.
 
 ---
 
+</details>
+
 # 🚧 Challenges Faced
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Building LeetRecall AI involved solving several practical engineering challenges.
 
@@ -803,7 +925,12 @@ Connected Streamlit with FastAPI through REST APIs while maintaining modularity 
 
 ---
 
+</details>
+
 # 🛣️ Future Roadmap
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 The current implementation demonstrates the complete architecture of the platform.
 
@@ -824,7 +951,12 @@ Future enhancements include:
 
 ---
 
+</details>
+
 # 🤝 Contributing
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 Contributions are welcome.
 
@@ -839,7 +971,12 @@ Suggestions, bug reports, and feature requests are always appreciated.
 
 ---
 
+</details>
+
 # 📄 License
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 This project is licensed under the **MIT License**.
 
@@ -847,7 +984,12 @@ Feel free to use, modify, and distribute it according to the license terms.
 
 ---
 
+</details>
+
 # 👨‍💻 Author
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 ## Nischal Agrawal
 
@@ -859,7 +1001,12 @@ Netaji Subhas University of Technology (NSUT)
 
 ---
 
+</details>
+
 # ⭐ Support
+
+<details>
+<summary><strong>Click to expand this section</strong></summary>
 
 If you found this project useful,
 
@@ -884,3 +1031,5 @@ Built with ❤️ using
 *"Learn Smarter. Revise Better. Retain Longer."*
 
 </div>
+
+</details>
